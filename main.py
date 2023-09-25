@@ -62,3 +62,14 @@ async def get_new_money(at_1_rate:int,
     return {"stop": "success"}
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
+"""
+mysql> CREATE TABLE
+    ->   `users` (
+    ->     `id` varchar(255) NOT NULL,
+    ->     `name` varchar(255) DEFAULT NULL,
+    ->     `money` int(11) DEFAULT 1000,
+    ->     `at_1` int(11) DEFAULT 0,
+    ->     `at_2` int(11) DEFAULT 0,
+    ->     PRIMARY KEY (`id`)
+    ->   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3;
+"""
