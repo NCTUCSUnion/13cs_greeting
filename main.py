@@ -8,6 +8,49 @@ import os
 dotenv.load_dotenv()
 import json
 import uvicorn
+from fastapi import FastAPI, Depends, HTTPException, Request 
+from authlib.integrations.starlette_client import OAuth
+from starlette.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # 检查这里的域名是否正确
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+#取得所有使用者
+oauth = OAuth()
+oauth.register(
+    name="nycu",
+    client_id=os.getenv("OAUTH_ID"),
+    client_secret=os.getenv("OAUTH_KEY"),
+    authorize_url="https://nycu.edu.tw/oauth/authorize",
+    authorize_params=None,
+    authorize_prompt=None,
+    authorize_response=None,
+    authorize_token=None,
+    authorize_token_url="https://nycu.edu.tw/oauth/token",
+    client_kwargs=None,
+)
+@app.get("/")
+async def hello():
+    return {"message": "welcome to NYCU 14 UNION greeting api"}
+
+@app.get("/login")
+async def login(request: Request):
+    
+    return RedirectResponse(f'https://id.nycu.edu.tw/o/authorize/?client_id={os.getenv("OAUTH_ID")}&response_type=code&scope=profile&redirect_uri=http://127.0.0.1:8000/callback')
+
+@app.get("/callback")
+async def callback(code):
+    print(code)
+    # token = await oauth.nycu.authorize_access_token(request)
+    # user = await oauth.nycu.parse_id_token(request, token)
+    return code
+    # return {"success": True, "user": user}
 
 @app.get("/users/")
 async def get_users(db: cursor.MySQLCursor = Depends(get_db)):
