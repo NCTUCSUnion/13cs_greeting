@@ -9,13 +9,13 @@ const Players = () => {
     const [rating2, setrating2] = useState(0);
     const user_id = '1111';
     var player1 = {
-        name:'whp',
+        name:'玩家右的左邊',
         ID:1,
         motto: "Don't touch me",
         img: '/assets/whp.png',
     }
     var player2 = {
-        name:'winston',
+        name:'玩家左的右邊',
         ID:2,
         motto: "Aren't you strong",
         img: '/assets/winston.png',
@@ -23,12 +23,8 @@ const Players = () => {
         now:0
     }
     useEffect(() => {
-        // console.log('+++++')
         fetchData(`users/${user_id}`)
         .then((result) => {
-            // 在这里处理从FastAPI获取的数据
-            // console.log('-----')
-            // console.log(result);
             setgambler(result);
         })
         .catch((error) => {
@@ -86,7 +82,7 @@ const Player_card = ({ player ,gambler,rating,bid}) => {
                 <img className ='m-auto h-full' src = {player.img}/>
             </div>
             <div className = 'text-center'>
-                <div className = 'text-2xl'>玩家：{player.ID}:&emsp;{player.name}</div>
+                <div className = 'text-2xl'>玩家：{player.name}</div>
                 <div className = 'text-2xl'>座右銘：&emsp;{player.motto}</div>
                 <div className = 'text-2xl'>賠率：&emsp;{rating}</div>
                 <div className = 'text-2xl'>已下注：&emsp;{bid}</div>
