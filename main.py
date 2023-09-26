@@ -88,7 +88,7 @@ async def get_user(user_id: str,
         return {"id": result[0][0], "name": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]}
 
 # 創建使用者
-@app.get("/user_name/{user_id}")
+@app.get("/create/{user_id}")
 async def insert_user(user_id: str,
                       db: cursor.MySQLCursor = Depends(get_db)):
     query = "INSERT INTO users (id) VALUES (%s)"
@@ -98,7 +98,6 @@ async def insert_user(user_id: str,
     return {"user_name": user_id}
 
 # 下注
-
 @app.get("/bet/{user_id}/{at}/{money}")
 async def bet(user_id: str,
                       at: str,
