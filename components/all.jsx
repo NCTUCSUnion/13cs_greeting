@@ -24,7 +24,7 @@ const ALL = () => {
         rating:3.5,
         now:0
     }
-    useEffect(() => {
+    const refresh_ = () =>{
         fetchData(`users/${user_id}`)
         .then((result) => {
             setgambler(result);
@@ -41,6 +41,9 @@ const ALL = () => {
         .catch((error) => {
             console.error(error);
         });
+    }
+    useEffect(() => {
+        refresh_();
     }, []);
 
     const [inputValue1, setInputValue1] = useState(0);
@@ -78,24 +81,7 @@ const ALL = () => {
             console.error(error);
         });
         alert(`你下注了${inputValue1}元在${player1.name}身上`);
-        
-        fetchData(`users/${user_id}`)
-        .then((result) => {
-            setgambler(result);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        fetchData(`total_bet_money`)
-        .then((result) => {
-            setrating1(Math.round((result[0]+result[1])/result[0]*100)/100);
-            setrating2(Math.round((result[0]+result[1])/result[1]*100)/100);
-            console.log(result)
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        
+        refresh_();
     }
     const handleButtonClick2 = (event) => {
         if(inputValue2 < 0){
@@ -114,40 +100,10 @@ const ALL = () => {
             console.error(error);
         });
         alert(`你下注了${inputValue2}元在${player2.name}身上`);
-        fetchData(`users/${user_id}`)
-        .then((result) => {
-            setgambler(result);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        fetchData(`total_bet_money`)
-        .then((result) => {
-            setrating1(Math.round((result[0]+result[1])/result[0]*100)/100);
-            setrating2(Math.round((result[0]+result[1])/result[1]*100)/100);
-            console.log(result)
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        refresh_();
     }
     const refresh = (event) => {
-        fetchData(`users/${user_id}`)
-        .then((result) => {
-            setgambler(result);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        fetchData(`total_bet_money`)
-        .then((result) => {
-            setrating1(Math.round((result[0]+result[1])/result[0]*100)/100);
-            setrating2(Math.round((result[0]+result[1])/result[1]*100)/100);
-            console.log(result)
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        refresh_();
     }
     return(
         <>
@@ -190,7 +146,7 @@ const ALL = () => {
                         <img className ='m-auto h-full' src = '/assets/winston.png'/>
                     </div>
                     <div className = 'text-center'>
-                        <div className = 'text-2xl'>玩家：{player2.nmae}</div>
+                        <div className = 'text-2xl'>玩家：{player2.name}</div>
                         <div className = 'text-2xl'>座右銘：{player2.motto}</div>
                         <div className = 'text-2xl'>賠率：&emsp;{rating2}</div>
                         <div className = 'text-2xl'>已下注：&emsp;{gambler.at_2}</div>
@@ -209,30 +165,5 @@ const ALL = () => {
         </div>
         </>
     )
-}
-// const Player_card = ({ player ,gambler,rating,bid}) => {
-
-    
-//     const handleButtonClick = (event) => {
-//         if(player.now < 0){
-//             alert("下注金額不可為負數");
-//             return;
-//         }
-//         if(player.now > gambler.money){
-//             alert("下注金額不可超過賭徒擁有金額");
-//             return;
-//         }
-//         fetchData(`bet/${gambler.id}/at_${player.ID}/${player.now}`)
-//         .then((result) => {
-//             console.log(result);
-//         })
-//         .catch((error) => {
-//             console.error(error);
-//         });
-//         alert(`你下注了${player.now}元在${player.name}身上`);
-//     }
-//     return(
-        
-//     )
-// }
+} 
 export default ALL
