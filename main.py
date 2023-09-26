@@ -1,11 +1,14 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.security.oauth2 import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+import httpx
 from mysql.connector import cursor
 from db import get_db
+import dotenv
+import os
+dotenv.load_dotenv()
 import json
 import uvicorn
 
-app = FastAPI()
-#取得所有使用者
 @app.get("/users/")
 async def get_users(db: cursor.MySQLCursor = Depends(get_db)):
     
@@ -26,6 +29,7 @@ async def get_user(user_id: str,
     db.execute(query)
     result = db.fetchall()
     if result:
+        print({"user_id": result[0][0], "username": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]})
         return {"user_id": result[0][0], "username": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]}
     else:
         return {"error": "User not found"}
@@ -60,6 +64,7 @@ async def get_new_money(at_1_rate:int,
     db.execute(query)
     db.execute("COMMIT")
     return {"stop": "success"}
+
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
 """
@@ -72,4 +77,15 @@ mysql> CREATE TABLE
     ->     `at_2` int(11) DEFAULT 0,
     ->     PRIMARY KEY (`id`)
     ->   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3;
+"""
+"""
+     SELECT * FROM users
+    -> ;
++------+------+-------+------+------+
+| id   | name | money | at_1 | at_2 |
++------+------+-------+------+------+
+| 1111 | Atom |  1000 |    0 |    0 |
+| 2222 | NULL |  1000 |    0 |    0 |
++------+------+-------+------+------+
+2 rows in set (0.00 sec)
 """

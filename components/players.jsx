@@ -1,19 +1,18 @@
 "use client"
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
+import { fetchData } from './api';
 import '@styles/globals.css'
 
 const Players = () => {
-    var gambler = {
-        name: "賭徒",
-        money: 1000,
-    }
+    const [gambler, setgambler] = useState([]);
+    const [rating1, setrating1] = useState(0);
+    const [rating2, setrating2] = useState(0);
+    const user_id = '1111';
     var player1 = {
         Name:'whp',
         ID:1,
         motto: "Don't touch me",
         img: '/assets/whp.png',
-        rating:2,
-        now: 0 
     }
     var player2 = {
         Name:'winston',
@@ -23,18 +22,31 @@ const Players = () => {
         rating:3.5,
         now:0
     }
+    useEffect(() => {
+        // console.log('+++++')
+        fetchData(`users/${user_id}`)
+        .then((result) => {
+            // 在这里处理从FastAPI获取的数据
+            // console.log('-----')
+            // console.log(result);
+            setgambler(result);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }, []);
     return(
         <>
         <div className = 'w-full h-auto mx-auto'>
             <div className = "flex place-content-evenly w-[80%] m-auto">
-                <Player_card player = {player1} gambler={gambler}/>
-                <Player_card player = {player2} gambler={gambler}/>
+                <Player_card player = {player1} gambler={gambler} rating = {rating1} bid = {gambler.at_1} />
+                <Player_card player = {player2} gambler={gambler} rating = {rating2} bid = {gambler.at_2}/>
             </div>
         </div>
         </>
     )
 }
-const Player_card = ({ player ,gambler}) => {
+const Player_card = ({ player ,gambler,bid}) => {
     const [inputValue, setInputValue] = useState(0);
 
     const handleInputChange = (event) => {
@@ -61,6 +73,7 @@ const Player_card = ({ player ,gambler}) => {
                 <div className = 'text-2xl'>玩家：{player.ID}:&emsp;{player.Name}</div>
                 <div className = 'text-2xl'>座右銘：&emsp;{player.motto}</div>
                 <div className = 'text-2xl'>賠率：&emsp;{player.rating}</div>
+                <div className = 'text-2xl'>已下注：&emsp;{bid}</div>
                 {/* {player.now} */}
             </div>
             <div className = 'text-2xl '>
