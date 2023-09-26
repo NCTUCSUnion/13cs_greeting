@@ -62,7 +62,7 @@ const Player_card = ({ player ,gambler,rating,bid}) => {
         player.now = event.target.value;
         setInputValue(event.target.value);
     }
-    const handleButtonClick = (event,player) => {
+    const handleButtonClick = (event) => {
         if(player.now < 0){
             alert("下注金額不可為負數");
             return;
@@ -71,7 +71,13 @@ const Player_card = ({ player ,gambler,rating,bid}) => {
             alert("下注金額不可超過賭徒擁有金額");
             return;
         }
-        console.log(player);
+        fetchData(`bet/${gambler.user_id}/at_${player.ID}/${player.now}`)
+        .then((result) => {
+            console.log(result);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
         alert(`你下注了${player.now}元在${player.Name}身上`);
     }
     return(
@@ -90,7 +96,7 @@ const Player_card = ({ player ,gambler,rating,bid}) => {
                 金額：&emsp;
                 <input className = 'w-[40%] border-black border' type="number" value={inputValue} onChange={handleInputChange} />
                 &emsp;
-                <button className = 'bg-gray-300 px-2 py-1 rounded-lg border-black border' onClick={handleButtonClick(player)}>
+                <button className = 'bg-gray-300 px-2 py-1 rounded-lg border-black border' onClick={handleButtonClick}>
                     下注
                 </button>
             </div>
