@@ -1,8 +1,21 @@
+"use client"
+import { useEffect, useState } from 'react';
+import { fetchData } from './api';
+import '@styles/globals.css'
+
 const info = () => {
-    const gambler = {
-        name: "賭徒",
-        money: 1000,
-    }
+    const [gambler, setgambler] = useState([]);
+    const user_id = '1111';
+    useEffect(() => {
+        fetchData(`users/${user_id}`)
+        .then((result) => {
+            setgambler(result);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+        
+    }, []);
     return(
         <div className = "w-full m-auto">
             <div className = "w-[80%] my-4 py-8 bg-gray-300 mx-auto rounded-lg" >

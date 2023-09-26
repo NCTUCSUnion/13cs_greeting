@@ -9,13 +9,13 @@ const Players = () => {
     const [rating2, setrating2] = useState(0);
     const user_id = '1111';
     var player1 = {
-        Name:'whp',
+        name:'whp',
         ID:1,
         motto: "Don't touch me",
         img: '/assets/whp.png',
     }
     var player2 = {
-        Name:'winston',
+        name:'winston',
         ID:2,
         motto: "Aren't you strong",
         img: '/assets/winston.png',
@@ -71,14 +71,14 @@ const Player_card = ({ player ,gambler,rating,bid}) => {
             alert("下注金額不可超過賭徒擁有金額");
             return;
         }
-        fetchData(`bet/${gambler.user_id}/at_${player.ID}/${player.now}`)
+        fetchData(`bet/${gambler.id}/at_${player.ID}/${player.now}`)
         .then((result) => {
             console.log(result);
         })
         .catch((error) => {
             console.error(error);
         });
-        alert(`你下注了${player.now}元在${player.Name}身上`);
+        alert(`你下注了${player.now}元在${player.name}身上`);
     }
     return(
         <div className = 'w-[40%] p-8 m-4 bg-[#EED5B7] rounded-lg'>
@@ -86,7 +86,7 @@ const Player_card = ({ player ,gambler,rating,bid}) => {
                 <img className ='m-auto h-full' src = {player.img}/>
             </div>
             <div className = 'text-center'>
-                <div className = 'text-2xl'>玩家：{player.ID}:&emsp;{player.Name}</div>
+                <div className = 'text-2xl'>玩家：{player.ID}:&emsp;{player.name}</div>
                 <div className = 'text-2xl'>座右銘：&emsp;{player.motto}</div>
                 <div className = 'text-2xl'>賠率：&emsp;{rating}</div>
                 <div className = 'text-2xl'>已下注：&emsp;{bid}</div>

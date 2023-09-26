@@ -72,8 +72,8 @@ async def get_user(user_id: str,
     db.execute(query)
     result = db.fetchall()
     if result:
-        print({"user_id": result[0][0], "username": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]})
-        return {"user_id": result[0][0], "username": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]}
+        print({"id": result[0][0], "name": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]})
+        return {"id": result[0][0], "name": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]}
     else:
         return {"error": "User not found"}
 
@@ -88,6 +88,7 @@ async def insert_user(user_id: str,
     return {"user_name": user_id}
 
 # 下注
+
 @app.get("/bet/{user_id}/{at}/{money}")
 async def bet(user_id: str,
                       at: str,
@@ -110,8 +111,8 @@ async def get_total_bet_money(db: cursor.MySQLCursor = Depends(get_db)):
     return result
 # 截標
 @app.get("/stop/{at_1_rate}/{at_2_rate}")
-async def get_new_money(at_1_rate:int,
-                        at_2_rate:int,
+async def get_new_money(at_1_rate:float,
+                        at_2_rate:float,
                         db: cursor.MySQLCursor = Depends(get_db)):
     query = f"UPDATE users SET money = money+at_1*{at_1_rate}+ at_2*{at_2_rate}, at_1 = 0, at_2 = 0;"
     db.execute(query)
