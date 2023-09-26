@@ -34,6 +34,15 @@ const Players = () => {
         .catch((error) => {
             console.error(error);
         });
+        fetchData(`total_bet_money`)
+        .then((result) => {
+            setrating1(Math.round((result[0]+result[1])/result[0]*100)/100);
+            setrating2(Math.round((result[0]+result[1])/result[1]*100)/100);
+            console.log(result)
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }, []);
     return(
         <>
@@ -46,14 +55,14 @@ const Players = () => {
         </>
     )
 }
-const Player_card = ({ player ,gambler,bid}) => {
+const Player_card = ({ player ,gambler,rating,bid}) => {
     const [inputValue, setInputValue] = useState(0);
 
     const handleInputChange = (event) => {
         player.now = event.target.value;
         setInputValue(event.target.value);
     }
-    const handleButtonClick = (event) => {
+    const handleButtonClick = (event,player) => {
         if(player.now < 0){
             alert("下注金額不可為負數");
             return;
@@ -62,6 +71,7 @@ const Player_card = ({ player ,gambler,bid}) => {
             alert("下注金額不可超過賭徒擁有金額");
             return;
         }
+        console.log(player);
         alert(`你下注了${player.now}元在${player.Name}身上`);
     }
     return(
@@ -72,7 +82,7 @@ const Player_card = ({ player ,gambler,bid}) => {
             <div className = 'text-center'>
                 <div className = 'text-2xl'>玩家：{player.ID}:&emsp;{player.Name}</div>
                 <div className = 'text-2xl'>座右銘：&emsp;{player.motto}</div>
-                <div className = 'text-2xl'>賠率：&emsp;{player.rating}</div>
+                <div className = 'text-2xl'>賠率：&emsp;{rating}</div>
                 <div className = 'text-2xl'>已下注：&emsp;{bid}</div>
                 {/* {player.now} */}
             </div>
@@ -80,7 +90,7 @@ const Player_card = ({ player ,gambler,bid}) => {
                 金額：&emsp;
                 <input className = 'w-[40%] border-black border' type="number" value={inputValue} onChange={handleInputChange} />
                 &emsp;
-                <button className = 'bg-gray-300 px-2 py-1 rounded-lg border-black border' onClick={handleButtonClick}>
+                <button className = 'bg-gray-300 px-2 py-1 rounded-lg border-black border' onClick={handleButtonClick(player)}>
                     下注
                 </button>
             </div>

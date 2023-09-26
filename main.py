@@ -98,6 +98,16 @@ async def bet(user_id: str,
     db.execute("COMMIT")
     return {"bet": "success"}
     # return await get_user(user_id)
+    
+# 取得下注金額
+@app.get("/total_bet_money")
+async def get_total_bet_money(db: cursor.MySQLCursor = Depends(get_db)):
+    query = "SELECT SUM(at_1), SUM(at_2) FROM users"
+    db.execute(query)
+    result = db.fetchone()
+    db.execute("COMMIT")
+    # print(result)
+    return result
 # 截標
 @app.get("/stop/{at_1_rate}/{at_2_rate}")
 async def get_new_money(at_1_rate:int,
