@@ -75,7 +75,17 @@ async def get_user(user_id: str,
         print({"id": result[0][0], "name": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]})
         return {"id": result[0][0], "name": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]}
     else:
-        return {"error": "User not found"}
+        #create user
+        print("user not found, creating...")
+        query = f"INSERT INTO users (id) VALUES ({user_id});"
+        db.execute(query)
+        db.execute("COMMIT")
+        #find user
+        query = f"SELECT * FROM users WHERE id = {user_id};"
+        db.execute(query)
+        result = db.fetchall()
+        print({"id": result[0][0], "name": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]})
+        return {"id": result[0][0], "name": result[0][1], "money":result[0][2], "at_1":result[0][3],"at_2":result[0][4]}
 
 # 創建使用者
 @app.get("/user_name/{user_id}")
