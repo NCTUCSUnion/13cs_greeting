@@ -36,7 +36,7 @@ const ALL = () => {
         .then((result) => {
             setrating1(Math.round((result[0]+result[1])/result[0]*100)/100);
             setrating2(Math.round((result[0]+result[1])/result[1]*100)/100);
-            console.log(result)
+            // console.log(result)
         })
         .catch((error) => {
             console.error(error);
@@ -70,9 +70,9 @@ const ALL = () => {
             alert("下注金額不可超過賭徒擁有金額");
             return;
         }
-        console.log("dfs")
-        console.log(inputValue1)
-        console.log(gambler.money)
+        // console.log("dfs")
+        // console.log(inputValue1)
+        // console.log(gambler.money)
         fetchData(`bet/${gambler.id}/at_${player1.ID}/${inputValue1}`)
         .then((result) => {
             console.log(result);
